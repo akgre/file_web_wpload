@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Request
 from fastapi. responses import HTMLResponse
-from fastapi.templating import Jinga2Templates
+from fastapi.templating import Jinja2Templates
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = FastAPI(title="my test app")
 
-templates = Jinga2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.get('index/', response_class=HTMLResponse)
