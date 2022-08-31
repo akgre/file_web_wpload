@@ -21,6 +21,11 @@ def hello():
     return {'message': 'Hello World!', "additional": "bob"}
 
 
+@app.post("/items/", status_code=201)
+async def create_item(name: str):
+    return {"name": name}
+
+
 # @app.post("/files/")
 # async def create_file(file: bytes = File()):
 #     return {"file_size": len(file)}
