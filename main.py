@@ -15,9 +15,9 @@ def index(request: Request):
     return templates.TemplateResponse("index.html", context)
 
 
-@app.post("/uploadfile/")
-def create_upload_file(file: UploadFile):
-    return {"filename": file.filename}
+# @app.post("/uploadfile/")
+# def create_upload_file(file: UploadFile):
+#     return {"filename": file.filename}
 
 
 @app.get('/hello')
