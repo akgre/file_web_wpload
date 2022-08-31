@@ -16,7 +16,7 @@ def index(request: Request):
 
 
 @app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile):
+def create_upload_file(file: UploadFile):
     return {"filename": file.filename}
 
 
