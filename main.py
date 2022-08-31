@@ -14,14 +14,14 @@ def index(request: Request):
     context = {"request": request}
     return templates.TemplateResponse("index.html", context)
 
-
-# @app.post("/uploadfile/")
-# def create_upload_file(file: UploadFile):
-#     return {"filename": file.filename}
-
-
 @app.get('/hello')
 def hello():
     """Return a friendly HTTP greeting.
     ![alt text](https://media.istockphoto.com/id/523495902/vector/wind-station-alternative-energy-generation-resource-nature-background-banner.webp?s=2048x2048&w=is&k=20&c=_Fm-iFeceJh0bR7pZQkk144sukdbfjgL0lC_mDBy5aQ=)"""
     return {'message': 'Hello World!', "additional": "bob"}
+
+
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile):
+    print(file.filename)
+    return {"filename": file.filename}
