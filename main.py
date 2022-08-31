@@ -1,11 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi. responses import HTMLResponse
+from fastapi.templating import Jinga2Templates
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = FastAPI(title="my test app")
 
+templates = Jinga2Templates(directory="templates")
 
-@app.get('/')
+
+@app.get('index/', response_class=HTMLResponse)
+def index(request: Request):
+    context = {"request": request}
+    return templates.TemplateResponse("index.html", context)
+
+
+@app.get('/hello')
 def hello():
     """Return a friendly HTTP greeting.
     ![alt text](https://media.istockphoto.com/id/523495902/vector/wind-station-alternative-energy-generation-resource-nature-background-banner.webp?s=2048x2048&w=is&k=20&c=_Fm-iFeceJh0bR7pZQkk144sukdbfjgL0lC_mDBy5aQ=)"""
