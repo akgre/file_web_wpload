@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, File, UploadFile
 from fastapi. responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -13,6 +13,11 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     context = {"request": request}
     return templates.TemplateResponse("index.html", context)
+
+
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile):
+    return {"filename": file.filename}
 
 
 @app.get('/hello')
