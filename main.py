@@ -21,7 +21,7 @@ def hello():
     return {'message': 'Hello World!', "additional": "bob"}
 
 
-@app.post("/uploadfile/")
+@app.post("/uploadfile")
 async def create_upload_file(file: UploadFile):
     print(file.filename)
     return {"filename": file.filename}
