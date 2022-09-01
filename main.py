@@ -26,11 +26,11 @@ async def create_item(name: str):
     return {"name": name}
 
 
-# @app.post("/files/")
-# async def create_file(file: bytes = File()):
-#     return {"file_size": len(file)}
+@app.post("/files/")
+async def create_file(file: bytes = File()):
+    return {"file_size": len(file)}
 
 
-@app.post("/uploadfile")
-def create_upload_file(ata: UploadFile = File(...)):
-    return {"filename": "feefe"}
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile):
+    return {"filename": file.filename}
