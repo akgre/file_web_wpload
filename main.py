@@ -32,5 +32,5 @@ async def create_item(name: str):
 
 
 @app.post("/uploadfile")
-def create_upload_file():
+def create_upload_file(ata: UploadFile = File(...)):
     return {"filename": "feefe"}
