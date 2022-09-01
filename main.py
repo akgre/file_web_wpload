@@ -9,7 +9,7 @@ app = FastAPI(title="my test app")
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get('/', response_class=HTMLResponse)
+@app.get('/', response_class=HTMLResponse, include_in_schema=False)
 def index(request: Request):
     context = {"request": request}
     return templates.TemplateResponse("index.html", context)
