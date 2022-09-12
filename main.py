@@ -36,10 +36,11 @@ async def create_file(file: bytes = File()):
 
 
 @app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile = File(...)):
+async def create_upload_file(file: UploadFile):
     if "csv" in file.content_type:
-        with open(file.filename) as csv_file:
-            print(csv_file.read(4096))
+        print(file.read(4096))
+    else:
+        print("not csv")
     try:
         with open(file.filename) as csv_file:
             check_read_start = csv_file.read(4096)
