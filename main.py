@@ -56,7 +56,8 @@ async def create_upload_file(file: UploadFile):
         # Could not get a csv dialect -> probably not a csv.
         return {"error": "Could not get a csv dialect -> probably not a csv."}
 
-    if any([cell == "" for cell in file_content[0]]):
+    print(file_content[0])
+    if any([cell.strip() == "" for cell in file_content[0]]):
         error_list = []
         for _count, cell in enumerate(file_content[0]):
             if cell == "":
