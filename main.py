@@ -37,24 +37,24 @@ async def create_file(file: bytes = File()):
 
 @app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile):
-    if "csv" in file.content_type:
-        print(await file.read(4096))
-    else:
-        print("not csv")
+    if "csv" not in file.content_type:
+        return {"error": "Not a csv"}
+
+    await file.read(4096)
+
     try:
-        with open(file.filename) as csv_file:
-            check_read_start = csv_file.read(4096)
+        check_read_start = await file.read(4096)
 
-            # isprintable does not allow newlines, printable does not allow umlauts...
-            if not all([c in string.printable or c.isprintable() for c in check_read_start]):
-                raise csv.Error
+        # isprintable does not allow newlines, printable does not allow umlauts...
+        if not all([c in string.printable or c.isprintable() for c in check_read_start]):
+            raise csv.Error
 
-            dialect = csv.Sniffer().sniff(check_read_start)
+        dialect = csv.Sniffer().sniff(check_read_start)
 
-            file_content = [row for row in csv.reader(csv_file, delimiter=dialect.delimiter)]
+        file_content = [row for row in csv.reader(file, delimiter=dialect.delimiter)]
 
     except csv.Error:
         # Could not get a csv dialect -> probably not a csv.
         return {"error": "Could not get a csv dialect -> probably not a csv."}
 
-    return {"filename": file.filename}
+    return {"filename": file.filename, "dialect": dialect}
