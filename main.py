@@ -50,7 +50,7 @@ async def create_upload_file(file: UploadFile):
 
         dialect = csv.Sniffer().sniff(file_as_string)
 
-        file_content = [row for row in csv.reader(file_as_string, delimiter=dialect.delimiter)]
+        file_content = csv.reader(file_as_string, delimiter=dialect.delimiter)
 
     except csv.Error:
         # Could not get a csv dialect -> probably not a csv.
