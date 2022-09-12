@@ -41,7 +41,7 @@ async def create_upload_file(file: UploadFile):
         return {"error": "Not a csv"}
 
     try:
-        check_read_start = await file.read(4096)
+        check_read_start = await file.read()
         check_read_start = check_read_start.decode("utf-8")
         print(check_read_start)
 
