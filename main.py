@@ -37,10 +37,12 @@ async def create_file(file: bytes = File()):
 
 @app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
-    print(file.filename)
-    print(file.content_type)
+    if "csv" in file.content_type:
+        with open(file.filename) as csv_file:
+            file_content = [row for row in csv.reader(csv_file)]
+            print(file_content[0])
     try:
-        with open(file.filename, "wb") as csv_file:
+        with open(file.filename) as csv_file:
             check_read_start = csv_file.read(4096)
 
             # isprintable does not allow newlines, printable does not allow umlauts...
