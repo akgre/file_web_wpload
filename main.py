@@ -42,6 +42,11 @@ async def create_upload_file(file: UploadFile):
 
     try:
         check_read_start = await file.read(4096)
+        print(check_read_start)
+
+        # isprintable does not allow newlines, printable does not allow umlauts...
+        if not all([c in string.printable or c.isprintable() for c in check_read_start]):
+            raise csv.Error
 
         dialect = csv.Sniffer().sniff(check_read_start)
 
