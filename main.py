@@ -41,20 +41,27 @@ async def create_upload_file(file: UploadFile):
         return {"error": "Not a csv"}
 
     try:
-        check_read_start = await file.read()
-        check_read_start = check_read_start.decode("utf-8")
-        print(check_read_start)
+        file_as_bytes = await file.read()
+        file_as_string = file_as_bytes.decode("utf-8")
 
         # isprintable does not allow newlines, printable does not allow umlauts...
-        if not all([c in string.printable or c.isprintable() for c in check_read_start]):
+        if not all([c in string.printable or c.isprintable() for c in file_as_string]):
             raise csv.Error
 
-        dialect = csv.Sniffer().sniff(check_read_start)
+        dialect = csv.Sniffer().sniff(file_as_string)
 
-        file_content = [row for row in csv.reader(check_read_start, delimiter=dialect.delimiter)]
+        file_content = [row for row in csv.reader(file_as_string, delimiter=dialect.delimiter)]
 
     except csv.Error:
         # Could not get a csv dialect -> probably not a csv.
         return {"error": "Could not get a csv dialect -> probably not a csv."}
+
+    if any([cell == "" for cell in file_content[0]]):
+        error_list = []
+        for _count, cell in enumerate(file_content[0]):
+            if cell == "":
+                error_list.append(f"Header cell {_count+1} is empty")
+        return {"filename": file.filename,
+                "errors": error_list}
 
     return {"filename": file.filename, "dialect": dialect}
