@@ -39,20 +39,20 @@ async def create_file(file: bytes = File()):
 async def create_upload_file(file: UploadFile = File(...)):
     print(file.filename)
     print(file.content_type)
-    # try:
-    #     with open(file.filename, "r") as csv_file:
-    #         check_read_start = csv_file.read(4096)
-    #
-    #         # isprintable does not allow newlines, printable does not allow umlauts...
-    #         if not all([c in string.printable or c.isprintable() for c in check_read_start]):
-    #             raise csv.Error
-    #
-    #         dialect = csv.Sniffer().sniff(check_read_start)
-    #
-    #         file_content = [row for row in csv.reader(csv_file, delimiter=dialect.delimiter)]
-    #
-    # except csv.Error:
-    #     # Could not get a csv dialect -> probably not a csv.
-    #     return {"error": "Could not get a csv dialect -> probably not a csv."}
+    try:
+        with open(file.filename, "wb") as csv_file:
+            check_read_start = csv_file.read(4096)
+
+            # isprintable does not allow newlines, printable does not allow umlauts...
+            if not all([c in string.printable or c.isprintable() for c in check_read_start]):
+                raise csv.Error
+
+            dialect = csv.Sniffer().sniff(check_read_start)
+
+            file_content = [row for row in csv.reader(csv_file, delimiter=dialect.delimiter)]
+
+    except csv.Error:
+        # Could not get a csv dialect -> probably not a csv.
+        return {"error": "Could not get a csv dialect -> probably not a csv."}
 
     return {"filename": file.filename}
